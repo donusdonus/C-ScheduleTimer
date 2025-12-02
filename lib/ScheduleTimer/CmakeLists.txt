@@ -1,0 +1,2 @@
+add_library(ScheduleTimer STATIC ScheduleTimer.cpp)
+target_include_directories(ScheduleTimer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

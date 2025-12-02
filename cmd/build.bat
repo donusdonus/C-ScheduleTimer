@@ -1,0 +1,1 @@
+del /f /s /q "../build/app.exe" && cmake --build ../build --parallel 4 

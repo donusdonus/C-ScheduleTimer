@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/ScheduleTimer/build/cmake_install.cmake",
+		"D:/ScheduleTimer/build/lib/cmake_install.cmake",
+		"D:/ScheduleTimer/build/lib/ScheduleTimer/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
