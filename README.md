@@ -441,7 +441,8 @@ d:\SmartTimer\
 
 ## 📄 License
 
-Your license information here
+MIT License
+Copyright (c) 2025 Toon Automation
 
 ---
 
