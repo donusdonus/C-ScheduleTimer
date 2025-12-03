@@ -5,15 +5,15 @@ int main() {
     ScheduleTimer scheduler;
 
     // Configure: LED blinks with 500ms ON, 500ms OFF
-    scheduler.Config_pulse_mode(&ledTimer, 500, 500);
-    scheduler.Enable(&ledTimer, true);
+    ledTimer.Config_pulse_mode(500, 500);
+    ledTimer.Enable(true);
 
     while (1) {
         scheduler.Update();
-        scheduler.Handle(&ledTimer);
-
+    
         // Check if timer is currently in ON phase
-        if (scheduler.IsDone(&ledTimer)) {
+        if (scheduler.Handle(&ledTimer)->IsDone()) 
+        {
             printf("LED: ON\n");
         } else {
             printf("LED: OFF\n");

@@ -6,15 +6,14 @@ int main()
     ScheduleTimer scheduler;
     int state = -1; //-1=Prepare 0=Red, 1=Green, 2=Yellow
 
-    scheduler.Config_oneshot_mode(&lightTimer, 1000);
-    scheduler.Enable(&lightTimer, true);
+    lightTimer.Config_oneshot_mode(1000);
+    lightTimer.Enable(true);
 
     while (1)
     {
         scheduler.Update();
-        scheduler.Handle(&lightTimer);
 
-        if (scheduler.IsDone(&lightTimer))
+        if (scheduler.Handle(&lightTimer)->IsDone())
         {
 
             state = (state + 1) % 3;
@@ -23,22 +22,22 @@ int main()
             {
             case 0:
                 printf("[RED] - Stop (5 seconds)\n");
-                scheduler.Config_oneshot_mode(&lightTimer, 5000);
+                lightTimer.Config_oneshot_mode(5000);
                
                 break;
             case 1:
                 printf("[GREEN] - Go (3 seconds)\n");
-                scheduler.Config_oneshot_mode(&lightTimer, 3000);
+                lightTimer.Config_oneshot_mode(3000);
             
                 break;
             case 2:
                 printf("[YELLOW] - Caution (1 second)\n");
-                scheduler.Config_oneshot_mode(&lightTimer, 1000);
+                lightTimer.Config_oneshot_mode(1000);
            
                 break;
             }
 
-             scheduler.Enable(&lightTimer, true);
+            lightTimer.Enable(true);
 
         }
     }

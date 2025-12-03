@@ -53,6 +53,76 @@ struct Timer
         } bits;
         uint8_t raw; /* Control raw data */
     } ctrl;
+
+#pragma region "Get Pamarameter functions"
+    /* Get Timer Done bit  */
+    bool IsDone()
+    { 
+        return status.bits.done;
+    }
+
+    /* Get Timer Done bit  */
+    bool IsRunning()
+    { 
+        return status.bits.running;
+    }
+
+    uint32_t ElapsedMillisecond()
+    {
+        return  accumulate;
+    }
+
+    /* Get Timer Mode */
+    TimerMode GetMode()
+    {
+        return  (TimerMode)ctrl.bits.cmd_mode;
+    }
+
+#pragma endregion
+
+#pragma region "Set Pamarameter functions"
+
+    void Init()
+    {
+        memset(this,0x00,sizeof(Timer));   
+    }
+
+    /* Config TimerMode::CAPTURE */
+    void Config_capture_mode()
+    {
+        Init();
+        ctrl.bits.cmd_mode = TimerMode::CAPTURE;   
+    }
+
+    /* Config TimerMode::ONESHOT */
+    void Config_oneshot_mode(uint32_t Offtime_ms)
+    {
+        Init();
+        ctrl.bits.cmd_mode = TimerMode::ONESHORT;
+        toff_ms = Offtime_ms;
+        status.bits.running = 0; 
+    }
+
+    /* Config TimerMode::PULSE */
+    void Config_pulse_mode(uint32_t Ontime_msec, uint32_t Offtime_msec)
+    {
+        Init();
+        ctrl.bits.cmd_mode = TimerMode::PULSE;
+        ton_ms = Ontime_msec;
+        toff_ms = Offtime_msec;
+    }
+
+    /* Enable or Disable Timer */
+    void Enable(bool enable)
+    {
+        ctrl.bits.cmd_enable = enable ? 1 : 0;
+    }
+
+#pragma endregion
+
+
+
+
 };
 #pragma pack(pop)
 
@@ -63,38 +133,11 @@ public:
     ScheduleTimer(); /* Constructor */
     ~ScheduleTimer(); /* Destructor */
 
-    /* Config TimerMode::CAPTURE */
-    void Config_capture_mode(Timer *tmr);
-
-    /* Config TimerMode::ONESHOT */
-    void Config_oneshot_mode(Timer *tmr, uint32_t Offtime_ms);
-
-    /* Config TimerMode::PULSE */
-    void Config_pulse_mode(Timer *tmr, uint32_t Ontime_msec, uint32_t Offtime_msec);
-
     /* Handle Timer All Type */
     Timer *Handle(Timer *tmr);
 
     /* update millis() time then scan all timer as handle */
-    void Update();
-
-    /* Reset Timer */
-    void Reset(Timer *tmr);
-
-    /* Enable or Disable Timer */
-    void Enable(Timer *tmr, bool enable);
-
-    /* Check Timer Done */
-    bool IsDone (Timer *tmr);
-
-    /* Check Timer Running */
-    bool IsRunning (Timer *tmr);
-
-    /* Get Elapsed Millisecond */
-    uint32_t ElapsedMillisecond(Timer *tmr);
-
-    /* Get Timer Mode */
-    TimerMode GetMode(Timer *tmr);
+    void Update() { scantime = millis(); }
 
 #ifdef ___OS_WINDOWS___
     /* Get current millis() time */
@@ -103,9 +146,6 @@ public:
 
 private:
     unsigned long scantime = 0;
-
-    /* Initialize Timer Structure */
-    void init(Timer *tmr);
 };
 
 #endif // __LIB__SCHEDULETIMER__H

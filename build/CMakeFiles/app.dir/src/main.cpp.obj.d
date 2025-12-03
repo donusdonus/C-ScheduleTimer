@@ -1,5 +1,6 @@
-CMakeFiles/app.dir/src/main.cpp.obj: D:\ScheduleTimer\src\main.cpp \
- D:/ScheduleTimer/lib/ScheduleTimer/ScheduleTimer.h \
+CMakeFiles/app.dir/src/main.cpp.obj: \
+ C:\Users\ToonA\C-ScheduleTimer\src\main.cpp \
+ C:/Users/ToonA/C-ScheduleTimer/lib/ScheduleTimer/ScheduleTimer.h \
  C:/msys64/mingw32/include/stdio.h \
  C:/msys64/mingw32/include/corecrt_stdio_config.h \
  C:/msys64/mingw32/include/corecrt.h C:/msys64/mingw32/include/_mingw.h \

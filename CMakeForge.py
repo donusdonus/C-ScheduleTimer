@@ -7,7 +7,7 @@ def project_v1(name):
     os.mkdir("include")
     os.mkdir("lib")
     os.mkdir("lib/MyLib")
-    os.mkdir("example")
+    os.mkdir("examples")
     os.mkdir("data")
     os.mkdir("build")
     os.mkdir("cmd")

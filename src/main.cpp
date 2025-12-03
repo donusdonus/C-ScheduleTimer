@@ -1,25 +1,35 @@
 #include "ScheduleTimer.h"
 
 int main() {
-    Timer ledTimer;
+    Timer buttonTimer;
     ScheduleTimer scheduler;
 
-    // Configure: LED blinks with 500ms ON, 500ms OFF
-    scheduler.Config_pulse_mode(&ledTimer, 500, 500);
-    scheduler.Enable(&ledTimer, true);
+    printf("Press button (Enter to simulate press/release)...\n");
 
-    while (1) {
+    // Start measuring time
+    buttonTimer.Config_capture_mode();
+    buttonTimer.Enable(true);
+
+    printf("Button pressed...\n");
+
+    while(true)
+    {
         scheduler.Update();
-        scheduler.Handle(&ledTimer);
+        scheduler.Handle(&buttonTimer);
 
-        // Check if timer is currently in ON phase
-        if (scheduler.IsDone(&ledTimer)) {
-            printf("LED: ON\n");
+        // Read total time
+        uint32_t pressTime = buttonTimer.ElapsedMillisecond();
+        printf("Button was pressed for: %u ms\n", pressTime);
+
+        if (pressTime > 2000) {
+            printf("Long press detected!\n");
+            return 0;
         } else {
-            printf("LED: OFF\n");
+            printf("Short press detected\n");
         }
+        
 
     }
-    
+
     return 0;
 }
