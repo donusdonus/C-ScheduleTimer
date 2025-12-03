@@ -115,61 +115,21 @@ int main() {
 
     while (1) {
         scheduler.Update();
+        scheduler.Handle(&ledTimer);
 
         // Check if timer is currently in ON phase
-        if (scheduler.IsRunning(&ledTimer)) {
+        if (scheduler.IsDone(&ledTimer)) {
             printf("LED: ON\n");
         } else {
             printf("LED: OFF\n");
         }
 
-        Sleep(100);  // Small delay
     }
     
     return 0;
 }
 ```
 
----
-
-### Example 2: Delayed Action (ONE-SHOT Mode)
-```cpp
-#include "ScheduleTimer.h"
-
-int main() {
-    Timer delayTimer;
-    ScheduleTimer scheduler;
-
-    printf("Starting alarm in 3 seconds...\n");
-    
-    // Trigger after 3000ms (3 seconds)
-    scheduler.Config_oneshot_mode(&delayTimer, 3000);
-    scheduler.Enable(&delayTimer, true);
-
-    while (1) {
-        scheduler.Update();
-        scheduler.Handle(&delayTimer);
-
-        if (scheduler.IsDone(&delayTimer)) {
-            printf("BEEP! Alarm triggered!\n");
-            break;
-        }
-        else 
-        {
-            // Show remaining time
-            uint32_t elapsed = scheduler.ElapsedMillisecond(&delayTimer);
-            printf("Elapsed: %u ms\n", elapsed);
-        }
-        
-        
-  
-    }
-    
-    return 0;
-}
-```
-
----
 
 ### Example 3: Button Long-Press Detector (CAPTURE Mode)
 ```cpp
@@ -263,36 +223,6 @@ int main()
 }
 ```
 
----
-
-### Example 5: Periodic Sensor Reading
-```cpp
-#include "ScheduleTimer.h"
-
-int main() {
-    Timer ledTimer;
-    ScheduleTimer scheduler;
-
-    // Configure: LED blinks with 500ms ON, 500ms OFF
-    scheduler.Config_pulse_mode(&ledTimer, 500, 500);
-    scheduler.Enable(&ledTimer, true);
-
-    while (1) {
-        scheduler.Update();
-        scheduler.Handle(&ledTimer);
-
-        // Check if timer is currently in ON phase
-        if (scheduler.IsDone(&ledTimer)) {
-            printf("LED: ON\n");
-        } else {
-            printf("LED: OFF\n");
-        }
-
-    }
-    
-    return 0;
-}
-```
 
 ---
 
@@ -334,6 +264,8 @@ while (!dataReceived) {
     scheduler.Update();
     if (scheduler.IsDone(&timeoutTimer)) {
         printf("Timeout! No data received.\n");
+        //if want reset timeoutTimer Process 
+        //schedule.Reset(&timeoutTimer);
         break;
     }
 }
