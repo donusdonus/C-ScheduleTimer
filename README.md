@@ -1176,95 +1176,6 @@ Timeline:
     
 Benefit: Keeps elapsed counter small, prevents overflow before next transition
 ```
-
----
-
-## ⚡ Performance Tips & Tricks
-
-### 1. Optimal Update Frequency
-
-```cpp
-// ✅ GOOD: Every 1-10ms (tight loop)
-while (1) {
-    scheduler.Update();
-    scheduler.Handle(&timer1);
-    scheduler.Handle(&timer2);
-    // ~200µs CPU time for 2 timers
-}
-
-// ⚠️ ACCEPTABLE: Every 50-100ms (with other work)
-void interrupt_handler() {  // Called every 50ms
-    scheduler.Update();
-    scheduler.Handle(&timer1);
-}
-
-// ❌ POOR: Variable intervals (inconsistent timing)
-if (random_condition) scheduler.Update();  // Unpredictable
-```
-
-**Rule of Thumb:** Update frequency should be **10x faster than your fastest timer resolution**
-
-### 2. Batch Multiple Timers
-
-```cpp
-// Efficient structure
-ScheduleTimer scheduler;
-Timer timers[10];  // Array of timers
-
-while (1) {
-    scheduler.Update();  // Call once
-    
-    // Process all timers in sequence
-    for (int i = 0; i < 10; i++) {
-        scheduler.Handle(&timers[i]);
-    }
-}
-```
-
-### 3. Minimize System Clock Reads
-
-```cpp
-// ✅ GOOD: One clock read per loop
-scheduler.Update();      // Reads system time once
-scheduler.Handle(&tmr1); // Uses cached time
-scheduler.Handle(&tmr2); // Uses cached time
-scheduler.Handle(&tmr3); // Uses cached time
-
-// ❌ BAD: Multiple clock reads
-tmr1.GetElapsed();       // Reads clock
-tmr2.GetElapsed();       // Reads clock again
-tmr3.GetElapsed();       // Reads clock again
-// 3x slower!
-```
-
-### 4. Avoid Nested Blocking Operations
-
-```cpp
-// ✅ GOOD: Non-blocking structure
-void loop() {
-    scheduler.Update();
-    scheduler.Handle(&timer1);
-    
-    if (timer1.IsDone()) {
-        doQuickTask();  // < 1ms execution
-    }
-    
-    // Continue to next iteration quickly
-}
-
-// ❌ BAD: Blocking inside timer handler
-void loop() {
-    scheduler.Update();
-    scheduler.Handle(&timer1);
-    
-    if (timer1.IsDone()) {
-        while (busy_condition) {  // ← Blocks updates!
-            // ...
-        }
-    }
-}
-```
-
 ---
 
 ## 🐛 Troubleshooting Guide
@@ -1399,57 +1310,6 @@ C-ScheduleTimer/
     ├── build_run.bat           # Build and run
     └── clean.bat               # Remove build files
 ```
-
----
-
-### Building Instructions
-
-#### Option 1: CMake (All Platforms)
-
-```bash
-# Create build directory
-mkdir build
-cd build
-
-# Configure and build
-cmake ..
-cmake --build .
-
-# Run example
-./app  # Linux/macOS
-app.exe  # Windows
-```
-
-#### Option 2: Windows Batch Scripts
-
-```cmd
-# From root directory
-cmd\init.bat     # Setup CMake
-cmd\build.bat    # Compile
-cmd\run.bat      # Execute
-```
-
-#### Option 3: Arduino IDE
-
-1. Copy `lib/ScheduleTimer` to `Arduino/libraries/`
-2. Open example in Arduino IDE
-3. Select board and port
-4. Click Upload
-
-#### Option 4: PlatformIO
-
-```bash
-# For ESP32
-pio run -e esp32 -t upload
-
-# For Arduino
-pio run -e arduino -t upload
-
-# For desktop
-pio run
-pio device monitor
-```
-
 ---
 
 ## 🔗 Integration Checklist
@@ -1583,7 +1443,6 @@ void loop() {
             break;
     }
     
-    delay(10);  // Small delay to prevent serial flooding
 }
 ```
 
@@ -1626,35 +1485,6 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 ```
-
----
-
-## 🎓 Learning Resources
-
-### Understanding Timer Concepts
-- [Wikipedia: Software Timer](https://en.wikipedia.org/wiki/Timer_(computing))
-- [Embedded Systems Timing Basics](https://www.embedded.com/)
-- [Real-Time Systems and Timing](https://www.embedded.fm/)
-
-### Platform-Specific Documentation
-- [Arduino millis() Reference](https://www.arduino.cc/reference/en/language/functions/time/millis/)
-- [ESP32 Arduino Core](https://github.com/espressif/arduino-esp32)
-- [C++ chrono Library](https://en.cppreference.com/w/cpp/chrono)
-
-### Related Projects
-- FreeRTOS: https://www.freertos.org/ (full RTOS with timers)
-- Arduino: https://www.arduino.cc/ (microcontroller platform)
-- PlatformIO: https://platformio.org/ (IDE and build system)
-
----
-
-## 🏆 Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.2 | Dec 2025 | Enhanced documentation, cross-platform examples, performance analysis |
-| 1.1 | Nov 2025 | Added CAPTURE mode, improved platform support |
-| 1.0 | Oct 2025 | Initial release: ONESHOT and PULSE modes |
 
 ---
 
