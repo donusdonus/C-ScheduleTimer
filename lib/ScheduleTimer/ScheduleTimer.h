@@ -67,7 +67,7 @@ struct Timer
         return status.bits.running;
     }
 
-    uint32_t ElapsedMillisecond(Timer *tmr)
+    uint32_t ElapsedMillisecond()
     {
         return  accumulate;
     }
@@ -133,44 +133,11 @@ public:
     ScheduleTimer(); /* Constructor */
     ~ScheduleTimer(); /* Destructor */
 
-    /* Config TimerMode::CAPTURE */
-    void Config_capture_mode(Timer *tmr);
-
-    /* Config TimerMode::ONESHOT */
-    void Config_oneshot_mode(Timer *tmr, uint32_t Offtime_ms);
-
-    /* Config TimerMode::PULSE */
-    void Config_pulse_mode(Timer *tmr, uint32_t Ontime_msec, uint32_t Offtime_msec);
-
     /* Handle Timer All Type */
     Timer *Handle(Timer *tmr);
 
     /* update millis() time then scan all timer as handle */
-    void Update();
-
-    /* Reset Timer */
-    void Reset(Timer *tmr)
-    {
-        tmr->status.bits.done = 0;
-        tmr->status.bits.running = 0;
-        tmr->accumulate = 0;
-        tmr->toffset = 0;
-    }
-
-    /* Enable or Disable Timer */
-    void Enable(Timer *tmr, bool enable);
-
-    /* Check Timer Done */
-    bool IsDone (Timer *tmr);
-
-    /* Check Timer Running */
-    bool IsRunning (Timer *tmr);
-
-    /* Get Elapsed Millisecond */
-    uint32_t ElapsedMillisecond(Timer *tmr);
-
-    /* Get Timer Mode */
-    TimerMode GetMode(Timer *tmr);
+    void Update() { scantime = millis(); }
 
 #ifdef ___OS_WINDOWS___
     /* Get current millis() time */
@@ -179,9 +146,6 @@ public:
 
 private:
     unsigned long scantime = 0;
-
-    /* Initialize Timer Structure */
-    void init(Timer *tmr);
 };
 
 #endif // __LIB__SCHEDULETIMER__H

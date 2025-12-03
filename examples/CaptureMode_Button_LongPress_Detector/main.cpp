@@ -7,8 +7,8 @@ int main() {
     printf("Press button (Enter to simulate press/release)...\n");
 
     // Start measuring time
-    scheduler.Config_capture_mode(&buttonTimer);
-    scheduler.Enable(&buttonTimer, true);
+    buttonTimer.Config_capture_mode();
+    buttonTimer.Enable(true);
 
     printf("Button pressed...\n");
 
@@ -18,7 +18,7 @@ int main() {
         scheduler.Handle(&buttonTimer);
 
         // Read total time
-        uint32_t pressTime = scheduler.ElapsedMillisecond(&buttonTimer);
+        uint32_t pressTime = buttonTimer.ElapsedMillisecond();
         printf("Button was pressed for: %u ms\n", pressTime);
 
         if (pressTime > 2000) {
@@ -27,8 +27,6 @@ int main() {
         } else {
             printf("Short press detected\n");
         }
-        
-
     }
 
     return 0;
