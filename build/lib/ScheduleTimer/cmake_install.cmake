@@ -1,4 +1,4 @@
-# Install script for directory: D:/ScheduleTimer/lib/ScheduleTimer
+# Install script for directory: C:/Users/ToonA/C-ScheduleTimer/lib/ScheduleTimer
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "D:/ScheduleTimer/build/lib/ScheduleTimer/install_local_manifest.txt"
+  file(WRITE "C:/Users/ToonA/C-ScheduleTimer/build/lib/ScheduleTimer/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

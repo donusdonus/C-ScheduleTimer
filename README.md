@@ -148,17 +148,21 @@ int main() {
 
     while (1) {
         scheduler.Update();
+        scheduler.Handle(&delayTimer);
 
         if (scheduler.IsDone(&delayTimer)) {
             printf("BEEP! Alarm triggered!\n");
             break;
         }
+        else 
+        {
+            // Show remaining time
+            uint32_t elapsed = scheduler.ElapsedMillisecond(&delayTimer);
+            printf("Elapsed: %u ms\n", elapsed);
+        }
         
-        // Show remaining time
-        uint32_t elapsed = scheduler.ElapsedMillisecond(&delayTimer);
-        printf("Elapsed: %u ms\n", elapsed);
         
-        Sleep(500);
+  
     }
     
     return 0;
@@ -182,21 +186,26 @@ int main() {
     scheduler.Enable(&buttonTimer, true);
 
     printf("Button pressed...\n");
-    Sleep(2500);  // Simulate 2.5 second press
 
-    // Stop measuring
-    scheduler.Enable(&buttonTimer, false);
+    while(true)
+    {
+        scheduler.Update();
+        scheduler.Handle(&buttonTimer);
 
-    // Read total time
-    uint32_t pressTime = scheduler.ElapsedMillisecond(&buttonTimer);
-    printf("Button was pressed for: %u ms\n", pressTime);
+        // Read total time
+        uint32_t pressTime = scheduler.ElapsedMillisecond(&buttonTimer);
+        printf("Button was pressed for: %u ms\n", pressTime);
 
-    if (pressTime > 2000) {
-        printf("✓ Long press detected!\n");
-    } else {
-        printf("✗ Short press detected\n");
+        if (pressTime > 2000) {
+            printf("Long press detected!\n");
+            return 0;
+        } else {
+            printf("Short press detected\n");
+        }
+        
+
     }
-    
+
     return 0;
 }
 ```
@@ -207,39 +216,49 @@ int main() {
 ```cpp
 #include "ScheduleTimer.h"
 
-int main() {
+int main()
+{
     Timer lightTimer;
     ScheduleTimer scheduler;
-    int state = 0;  // 0=Red, 1=Green, 2=Yellow
+    int state = -1; //-1=Prepare 0=Red, 1=Green, 2=Yellow
 
+    scheduler.Config_oneshot_mode(&lightTimer, 1000);
     scheduler.Enable(&lightTimer, true);
 
-    while (1) {
+    while (1)
+    {
         scheduler.Update();
+        scheduler.Handle(&lightTimer);
 
-        if (scheduler.IsDone(&lightTimer)) {
+        if (scheduler.IsDone(&lightTimer))
+        {
+
             state = (state + 1) % 3;
 
-            switch (state) {
-                case 0:
-                    printf("🔴 RED - Stop (5 seconds)\n");
-                    scheduler.Config_oneshot_mode(&lightTimer, 5000);
-                    break;
-                case 1:
-                    printf("🟢 GREEN - Go (3 seconds)\n");
-                    scheduler.Config_oneshot_mode(&lightTimer, 3000);
-                    break;
-                case 2:
-                    printf("🟡 YELLOW - Caution (1 second)\n");
-                    scheduler.Config_oneshot_mode(&lightTimer, 1000);
-                    break;
+            switch (state)
+            {
+            case 0:
+                printf("[RED] - Stop (5 seconds)\n");
+                scheduler.Config_oneshot_mode(&lightTimer, 5000);
+               
+                break;
+            case 1:
+                printf("[GREEN] - Go (3 seconds)\n");
+                scheduler.Config_oneshot_mode(&lightTimer, 3000);
+            
+                break;
+            case 2:
+                printf("[YELLOW] - Caution (1 second)\n");
+                scheduler.Config_oneshot_mode(&lightTimer, 1000);
+           
+                break;
             }
-            scheduler.Enable(&lightTimer, true);
-        }
 
-        Sleep(100);
+             scheduler.Enable(&lightTimer, true);
+
+        }
     }
-    
+
     return 0;
 }
 ```
@@ -251,26 +270,26 @@ int main() {
 #include "ScheduleTimer.h"
 
 int main() {
-    Timer sensorTimer;
+    Timer ledTimer;
     ScheduleTimer scheduler;
-    int readCount = 0;
 
-    // Read every 500ms (500ms on, 0ms off for immediate repeat)
-    scheduler.Config_pulse_mode(&sensorTimer, 1, 499);
-    scheduler.Enable(&sensorTimer, true);
+    // Configure: LED blinks with 500ms ON, 500ms OFF
+    scheduler.Config_pulse_mode(&ledTimer, 500, 500);
+    scheduler.Enable(&ledTimer, true);
 
-    while (readCount < 10) {
+    while (1) {
         scheduler.Update();
+        scheduler.Handle(&ledTimer);
 
-        if (scheduler.IsRunning(&sensorTimer)) {
-            float temperature = 23.5 + (rand() % 10);  // Simulate sensor
-            printf("[%d] Temperature: %.1f°C\n", ++readCount, temperature);
+        // Check if timer is currently in ON phase
+        if (scheduler.IsDone(&ledTimer)) {
+            printf("LED: ON\n");
+        } else {
+            printf("LED: OFF\n");
         }
 
-        Sleep(50);
     }
-
-    printf("Sensor reading complete!\n");
+    
     return 0;
 }
 ```
