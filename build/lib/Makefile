@@ -56,10 +56,10 @@ RM = C:\msys64\mingw32\bin\cmake.exe -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\ScheduleTimer
+CMAKE_SOURCE_DIR = C:\Users\ToonA\C-ScheduleTimer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\ScheduleTimer\build
+CMAKE_BINARY_DIR = C:\Users\ToonA\C-ScheduleTimer\build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,14 +86,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /d D:\ScheduleTimer\build && $(CMAKE_COMMAND) -E cmake_progress_start D:\ScheduleTimer\build\CMakeFiles D:\ScheduleTimer\build\lib\\CMakeFiles\progress.marks
-	cd /d D:\ScheduleTimer\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 lib/all
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\ScheduleTimer\build\CMakeFiles 0
+	cd /d C:\Users\ToonA\C-ScheduleTimer\build && $(CMAKE_COMMAND) -E cmake_progress_start C:\Users\ToonA\C-ScheduleTimer\build\CMakeFiles C:\Users\ToonA\C-ScheduleTimer\build\lib\\CMakeFiles\progress.marks
+	cd /d C:\Users\ToonA\C-ScheduleTimer\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 lib/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\ToonA\C-ScheduleTimer\build\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /d D:\ScheduleTimer\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 lib/clean
+	cd /d C:\Users\ToonA\C-ScheduleTimer\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 lib/clean
 .PHONY : clean
 
 # The main clean target
@@ -102,17 +102,17 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /d D:\ScheduleTimer\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 lib/preinstall
+	cd /d C:\Users\ToonA\C-ScheduleTimer\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 lib/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /d D:\ScheduleTimer\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 lib/preinstall
+	cd /d C:\Users\ToonA\C-ScheduleTimer\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 lib/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /d D:\ScheduleTimer\build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
+	cd /d C:\Users\ToonA\C-ScheduleTimer\build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
 .PHONY : depend
 
 # Help Target
@@ -134,6 +134,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /d D:\ScheduleTimer\build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
+	cd /d C:\Users\ToonA\C-ScheduleTimer\build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
